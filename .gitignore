@@ -1,0 +1,19 @@
+# Node.js dependencies
+node_modules/
+
+# Python virtual environment
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Django database & media files
+db.sqlite3
+media/
+
+# Editor & OS files
+.DS_Store
+.idea/
+.vscode/
+*.log
+.env
