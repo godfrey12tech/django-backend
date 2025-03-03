@@ -152,9 +152,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
-    "https://fynance-guide.vercel.app",
-    "https://fynance-guide-mel5m3cbu-emmanuel326s-projects.vercel.app",
-    "http://localhost:3000",  # Allow requests from React (running on localhost:3000)
+    #"https://fynance-guide.vercel.app",
+    #"https://fynance-guide-mel5m3cbu-emmanuel326s-projects.vercel.app",
+    "https://https://fynance-guide-fvklurwok-emmanuel326s-projects.vercel.app/"
+    #"http://localhost:3000",  # Allow requests from React (running on localhost:3000)
     "https://django-backend-94gk.onrender.com", 
 ]
 
