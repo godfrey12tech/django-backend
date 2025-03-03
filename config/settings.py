@@ -26,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-3+#s68zck&dcp+^m--ttufd-q@fs$oy5-+n4@@^!2)l845vm@s'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -152,7 +152,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS settings
 CORS_ALLOWED_ORIGINS = [
+    "https://fynance-guide.vercel.app",
+    "https://fynance-guide-mel5m3cbu-emmanuel326s-projects.vercel.app",
     "http://localhost:3000",  # Allow requests from React (running on localhost:3000)
+    "https://django-backend-94gk.onrender.com", 
 ]
 
 #CORS_ALLOW_CREDENTIALS = True  # Allow cookies (for authentication)
@@ -171,4 +174,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 
 APPEND_SLASH = True
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://fynance-guide.vercel.app",
+]
 
