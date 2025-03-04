@@ -150,11 +150,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
     # Other middleware
 
 
-# CORS settings
+'''# CORS settings
 CORS_ALLOWED_ORIGINS = [
     #"https://fynance-guide.vercel.app",
     #"https://fynance-guide-mel5m3cbu-emmanuel326s-projects.vercel.app",
-    "https://https://fynance-guide-fvklurwok-emmanuel326s-projects.vercel.app/"
+    "https://fynance-guide-fvklurwok-emmanuel326s-projects.vercel.app/"
     #"http://localhost:3000",  # Allow requests from React (running on localhost:3000)
     "https://django-backend-94gk.onrender.com", 
 ]
@@ -162,10 +162,17 @@ CORS_ALLOWED_ORIGINS = [
 #CORS_ALLOW_CREDENTIALS = True  # Allow cookies (for authentication)
 #CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
 #CORS_ALLOW_HEADERS = ["*"]
-CORS_ALLOW_ALL_ORIGINS = True  # For development only!
+#CORS_ALLOW_ALL_ORIGINS = True  # For development only!
+'''
 
 
+# Get the allowed origins from the environment variable (defaults to empty string if not set)
+allowed_origins = os.getenv("ALLOWED_ORIGINS", "")
 
+# Split the string by commas and remove any extra whitespace, filtering out empty strings
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in allowed_origins.split(",") if origin.strip()]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 
 # settings.py
