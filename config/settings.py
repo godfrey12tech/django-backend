@@ -166,13 +166,16 @@ CORS_ALLOWED_ORIGINS = [
 '''
 
 
-# Get the allowed origins from the environment variable (defaults to empty string if not set)
+
+
+
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "")
+print("ALLOWED_ORIGINS:", allowed_origins)  # Debug line
+# Remove any trailing slashes from each origin
+CORS_ALLOWED_ORIGINS = [origin.strip().rstrip('/') for origin in allowed_origins.split(",") if origin.strip()]
+CORS_ALLOW_ALL_ORIGINS = False
 
-# Split the string by commas and remove any extra whitespace, filtering out empty strings
-CORS_ALLOWED_ORIGINS = [origin.strip() for origin in allowed_origins.split(",") if origin.strip()]
-
-CORS_ALLOW_ALL_ORIGINS = True
+print("CORS_ALLOWED_ORIGINS:", CORS_ALLOWED_ORIGINS)  # For debugging
 
 
 # settings.py
