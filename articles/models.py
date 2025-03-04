@@ -5,6 +5,10 @@ class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
+    class Meta:
+        ordering=['name']
+        #ordering=['id']
+
     def __str__(self):
         return self.name or "Unnamed Category"
 
