@@ -11,34 +11,25 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 """
 
 from pathlib import Path
-from django.conf import settings
-from django.conf.urls.static import static
-import os 
+import os
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
-
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3+#s68zck&dcp+^m--ttufd-q@fs$oy5-+n4@@^!2)l845vm@s'
+SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key-if-not-set')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['*']
-
-REST_FRAMEWORK = {
-   
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
-}
-
+# Allowed hosts (comma separated in .env file)
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -47,27 +38,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    #my apps
+    # My apps
     'articles',
 
-    #thirdparty tools
+    # Third-party tools
     'rest_framework',
     'corsheaders',
     'django_filters',
-
-
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',  # Ensure CORS middleware comes early
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware', 
-
 ]
 
 ROOT_URLCONF = 'config.urls'
@@ -75,7 +63,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [],  # Add your template directories here if needed
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -90,21 +78,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/5.1/ref/settings/#databases
-
+# Database configuration using environment variables
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('DB_NAME', 'finance'),
+        'USER': os.getenv('DB_USER', 'manager'),
+        'PASSWORD': os.getenv('DB_PASSWORD', '123pass9243::man'),
+        'HOST': os.getenv('DB_HOST', 'localhost'),
+        'PORT': os.getenv('DB_PORT', '6543'),
     }
 }
 
-
 # Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -120,72 +106,40 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = os.getenv('TIME_ZONE', 'UTC')
 USE_I18N = True
-
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
 STATIC_URL = 'static/'
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# REST Framework settings
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10,
+}
 
-
-#MIDDLEWARE = [
-#    "corsheaders.middleware.CorsMiddleware",  # Add this at the top of MIDDLEWARE
-    # Other middleware
-
-
-'''# CORS settings
-CORS_ALLOWED_ORIGINS = [
-    #"https://fynance-guide.vercel.app",
-    #"https://fynance-guide-mel5m3cbu-emmanuel326s-projects.vercel.app",
-    "https://fynance-guide-fvklurwok-emmanuel326s-projects.vercel.app/"
-    #"http://localhost:3000",  # Allow requests from React (running on localhost:3000)
-    "https://django-backend-94gk.onrender.com", 
-]
-
-#CORS_ALLOW_CREDENTIALS = True  # Allow cookies (for authentication)
-#CORS_ALLOW_METHODS = ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
-#CORS_ALLOW_HEADERS = ["*"]
-#CORS_ALLOW_ALL_ORIGINS = True  # For development only!
-'''
-
-
-
-
-
+# CORS settings: ALLOWED_ORIGINS should be a comma-separated string in your .env file.
 allowed_origins = os.getenv("ALLOWED_ORIGINS", "")
-print("ALLOWED_ORIGINS:", allowed_origins)  # Debug line
-# Remove any trailing slashes from each origin
 CORS_ALLOWED_ORIGINS = [origin.strip().rstrip('/') for origin in allowed_origins.split(",") if origin.strip()]
 CORS_ALLOW_ALL_ORIGINS = False
 
-print("CORS_ALLOWED_ORIGINS:", CORS_ALLOWED_ORIGINS)  # For debugging
+# (Optional) Debug prints for CORS settings
+print("ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS", ""))
+print("CORS_ALLOWED_ORIGINS:", CORS_ALLOWED_ORIGINS)
 
-
-# settings.py
+# Media files configuration
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
-
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 APPEND_SLASH = True
 
+# CSRF trusted origins (modify as needed for your production domain)
 CSRF_TRUSTED_ORIGINS = [
     "https://fynance-guide.vercel.app",
 ]
-

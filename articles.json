@@ -1,0 +1,542 @@
+ALLOWED_ORIGINS: https://fynance-guide.vercel.app,https://fynance-guide-mel5m3cbu-emmanuel326s-projects.vercel.app,https://fynance-guide-fvklurwok-emmanuel326s-projects.vercel.app
+CORS_ALLOWED_ORIGINS: ['https://fynance-guide.vercel.app', 'https://fynance-guide-mel5m3cbu-emmanuel326s-projects.vercel.app', 'https://fynance-guide-fvklurwok-emmanuel326s-projects.vercel.app']
+[
+{
+  "model": "articles.category",
+  "pk": 1,
+  "fields": {
+    "name": "Technology",
+    "description": ""
+  }
+},
+{
+  "model": "articles.category",
+  "pk": 2,
+  "fields": {
+    "name": "finance",
+    "description": ""
+  }
+},
+{
+  "model": "articles.category",
+  "pk": 3,
+  "fields": {
+    "name": "personal Finance",
+    "description": ""
+  }
+},
+{
+  "model": "articles.category",
+  "pk": 4,
+  "fields": {
+    "name": "economics",
+    "description": ""
+  }
+},
+{
+  "model": "articles.category",
+  "pk": 5,
+  "fields": {
+    "name": "investment",
+    "description": ""
+  }
+},
+{
+  "model": "articles.category",
+  "pk": 6,
+  "fields": {
+    "name": "cybersecurity",
+    "description": ""
+  }
+},
+{
+  "model": "articles.tag",
+  "pk": 1,
+  "fields": {
+    "name": "Credit Score, Debt Management",
+    "description": ""
+  }
+},
+{
+  "model": "articles.tag",
+  "pk": 2,
+  "fields": {
+    "name": "Emergency Fund, Financial Security",
+    "description": ""
+  }
+},
+{
+  "model": "articles.tag",
+  "pk": 3,
+  "fields": {
+    "name": "Real Estate, Stock Market",
+    "description": ""
+  }
+},
+{
+  "model": "articles.tag",
+  "pk": 4,
+  "fields": {
+    "name": "Budgeting, Money Management",
+    "description": ""
+  }
+},
+{
+  "model": "articles.tag",
+  "pk": 5,
+  "fields": {
+    "name": "Financial Security, Fraud Prevention",
+    "description": ""
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 1,
+  "fields": {
+    "title": "The Future of AI in Everyday Finance",
+    "slug": "the-future-of-ai-in-everyday-finance",
+    "content": "Artificial Intelligence is rapidly transforming the finance sector. From automating investment strategies to detecting fraudulent transactions, AI is making financial systems more efficient and secure. Many banks and financial institutions are integrating AI-driven chatbots to assist customers with their transactions, making banking more seamless than ever before.\r\n\r\nWhile AI improves efficiency, it also raises concerns about data privacy and ethical decision-making in financial transactions. The future of AI in finance will likely involve stricter regulations and improved security measures to protect users' data.",
+    "excerpt": "AI is revolutionizing finance, enhancing security, and automating investments.",
+    "category": 1,
+    "image": "article_images/giorgio-trovato-WyxqQpyFNk8-unsplash.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 124,
+    "likes": 20,
+    "reading_time": 234,
+    "seo_title": "How AI is Shaping the Future of Finance",
+    "meta_description": "Discover how AI is transforming finance by automating investments, detecting fraud, and improving banking efficiency.",
+    "is_featured": true,
+    "created_at": "2025-02-24T07:28:04.094Z",
+    "updated_at": "2025-02-28T14:30:30.841Z",
+    "tags": [],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 2,
+  "fields": {
+    "title": "How to Invest in Cryptocurrency Safely",
+    "slug": "how-to-invest-in-cryptocurrency-safely",
+    "content": "Cryptocurrency investments have become increasingly popular, but they come with significant risks. With the volatile nature of digital currencies, investors need to take careful steps to protect their assets. Strategies such as diversifying investments, securing wallets, and understanding market trends can help reduce potential losses.\r\n\r\nIt is also important to avoid scams by researching new cryptocurrencies before investing. Choosing reputable exchanges and enabling two-factor authentication (2FA) can further enhance security.Cryptocurrency investments have become increasingly popular, but they come with significant risks. With the volatile nature of digital currencies, investors need to take careful steps to protect their assets. Strategies such as diversifying investments, securing wallets, and understanding market trends can help reduce potential losses.\r\n\r\nIt is also important to avoid scams by researching new cryptocurrencies before investing. Choosing reputable exchanges and enabling two-factor authentication (2FA) can further enhance security.",
+    "excerpt": "A beginner's guide to safe crypto investments.",
+    "category": 2,
+    "image": "article_images/josh-appel-NeTPASr-bmQ-unsplash.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 234,
+    "likes": 200,
+    "reading_time": 399,
+    "seo_title": "Safe Cryptocurrency Investment Strategies for Beginners",
+    "meta_description": "Learn how to invest in cryptocurrency safely, avoid scams, and secure your assets with expert strategies.",
+    "is_featured": false,
+    "created_at": "2025-02-24T07:30:01.364Z",
+    "updated_at": "2025-02-28T14:31:33.691Z",
+    "tags": [],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 3,
+  "fields": {
+    "title": "Why Web3 is the Future of Digital Finance",
+    "slug": "why-web3-is-the-future-of-digital-finance",
+    "content": "The internet is shifting towards a decentralized future with Web3, and this shift has significant implications for finance. Decentralized finance (DeFi) is emerging as an alternative to traditional banking, allowing users to lend, borrow, and trade assets without intermediaries.\r\n\r\nWith blockchain technology ensuring transparency and security, Web3 finance aims to give users complete control over their assets. However, challenges such as regulatory concerns and scalability need to be addressed before mainstream adoption can occur.",
+    "excerpt": "Web3 is set to revolutionize digital financial transactions.",
+    "category": 1,
+    "image": "article_images/mathieu-stern-1zO4O3Z0UJA-unsplash.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 100,
+    "likes": 78,
+    "reading_time": 10,
+    "seo_title": "How Web3 is Changing the Future of Finance",
+    "meta_description": "Explore how Web3 and decentralized finance (DeFi) are reshaping digital financial transactions.",
+    "is_featured": true,
+    "created_at": "2025-02-24T07:32:14.920Z",
+    "updated_at": "2025-02-28T14:33:58.716Z",
+    "tags": [],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 4,
+  "fields": {
+    "title": "The Psychology of Money: How Emotions Affect Financial Decisions",
+    "slug": "Behavioral-Finance-Money-Management",
+    "content": "Many people think financial success is just about numbers, but psychology plays a huge role in money management. Emotions like fear, greed, and overconfidence often lead to poor financial decisions. Understanding these emotional triggers can help individuals build better financial habits, such as saving consistently and avoiding impulsive investments.",
+    "excerpt": "How emotions impact money decisions and financial success.",
+    "category": 2,
+    "image": "article_images/pexels-cottonbro-3943723.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 51,
+    "likes": 18,
+    "reading_time": 10,
+    "seo_title": "draft",
+    "meta_description": "Learn how emotions like fear and greed influence financial choices and discover strategies for making better money decisions.",
+    "is_featured": true,
+    "created_at": "2025-02-24T07:35:49.342Z",
+    "updated_at": "2025-02-28T14:34:44.351Z",
+    "tags": [],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 5,
+  "fields": {
+    "title": ". The Rise of Digital Banking and What It Means for You",
+    "slug": "the-rise-of-digital-banking-and-what-it-means-for",
+    "content": "Traditional banking is evolving rapidly as digital banks and fintech startups reshape the industry. With mobile banking apps and AI-driven financial services, customers can access loans, savings, and investments with ease. However, cybersecurity remains a major concern as online fraud cases continue to rise.Traditional banking is evolving rapidly as digital banks and fintech startups reshape the industry. With mobile banking apps and AI-driven financial services, customers can access loans, savings, and investments with ease. However, cybersecurity remains a major concern as online fraud cases continue to rise.",
+    "excerpt": "How digital banking is revolutionizing financial services.",
+    "category": 2,
+    "image": "article_images/pexels-davidmcbee-730564.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 2330,
+    "likes": 230,
+    "reading_time": 123,
+    "seo_title": "Digital Banking: The Future of Financial Services",
+    "meta_description": "Explore the benefits of digital banking, fintech innovations, and security risks in the online banking world.",
+    "is_featured": true,
+    "created_at": "2025-02-24T07:58:09.313Z",
+    "updated_at": "2025-02-28T14:35:39.109Z",
+    "tags": [],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 6,
+  "fields": {
+    "title": ". Passive Income: 5 Proven Ways to Earn Money While You Sleep",
+    "slug": "passive-income-5-proven-ways-to-earn-money-while-y",
+    "content": "Building passive income streams is one of the best ways to achieve financial freedom. From dividend stocks and rental properties to affiliate marketing and online courses, multiple strategies can help generate income without active effort. The key is choosing a model that aligns with your skills and financial goals.\r\n\r\nBuilding passive income streams is one of the best ways to achieve financial freedom. From dividend stocks and rental properties to affiliate marketing and online courses, multiple strategies can help generate income without active effort. The key is choosing a model that aligns with your skills and financial goals.",
+    "excerpt": "Five passive income ideas for financial stability.",
+    "category": 2,
+    "image": "article_images/pexels-energepic-com-27411-2988232.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 0,
+    "likes": 0,
+    "reading_time": 0,
+    "seo_title": "Top 5 Passive Income Strategies for Long-Term Wealth",
+    "meta_description": "Discover five reliable passive income strategies to build wealth and gain financial freedom.",
+    "is_featured": true,
+    "created_at": "2025-02-24T08:00:11.564Z",
+    "updated_at": "2025-02-28T14:36:27.295Z",
+    "tags": [],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 7,
+  "fields": {
+    "title": "How to Save for Retirement in Your 20s and 30s",
+    "slug": "how-to-save-for-retirement-in-your-20s-and-30s",
+    "content": "Retirement may seem far away, but the earlier you start saving, the easier it becomes. Compound interest allows small savings to grow into significant wealth over time. Investing in retirement accounts, cutting unnecessary expenses, and maximizing employer benefits are crucial steps to securing a comfortable future.\r\n\r\nRetirement may seem far away, but the earlier you start saving, the easier it becomes. Compound interest allows small savings to grow into significant wealth over time. Investing in retirement accounts, cutting unnecessary expenses, and maximizing employer benefits are crucial steps to securing a comfortable future.",
+    "excerpt": "Smart retirement planning strategies for young professionals.",
+    "category": 3,
+    "image": "article_images/pexels-inspiredimages-157520.webp",
+    "status": "draft",
+    "is_published": true,
+    "views": 0,
+    "likes": 0,
+    "reading_time": 0,
+    "seo_title": "Early Retirement Planning: How to Save in Your 20s & 30s",
+    "meta_description": "Learn why saving for retirement early is essential and explore the best investment options for long-term security.Learn why saving for retirement early is essential and explore the best investment options for long-term security.",
+    "is_featured": false,
+    "created_at": "2025-02-24T08:03:09.154Z",
+    "updated_at": "2025-02-28T14:36:54.768Z",
+    "tags": [],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 8,
+  "fields": {
+    "title": "How Inflation Affects Your Savings and Investments",
+    "slug": "how-inflation-affects-your-savings-and-investments",
+    "content": "Inflation reduces the purchasing power of money over time, making it essential to invest wisely. Keeping cash in a savings account may not be enough, as inflation erodes its value. Instead, investing in stocks, real estate, or inflation-protected securities can help maintain wealth in the long run.Inflation reduces the purchasing power of money over time, making it essential to invest wisely. Keeping cash in a savings account may not be enough, as inflation erodes its value. Instead, investing in stocks, real estate, or inflation-protected securities can help maintain wealth in the long run.",
+    "excerpt": "Strategies to protect your savings from inflation.",
+    "category": 4,
+    "image": "article_images/pexels-karolina-grabowska-4386321.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 0,
+    "likes": 0,
+    "reading_time": 0,
+    "seo_title": "Inflation & Your Money: How to Protect Your Savings",
+    "meta_description": "Learn how inflation affects your savings and investments and discover the best strategies to safeguard your wealth.",
+    "is_featured": true,
+    "created_at": "2025-02-24T08:04:44.414Z",
+    "updated_at": "2025-02-28T14:37:35.577Z",
+    "tags": [
+      1
+    ],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 9,
+  "fields": {
+    "title": "Emergency Funds: Why You Need One and How to Build It",
+    "slug": "emergency-funds-why-you-need-one-and-how-to-build",
+    "content": "An emergency fund acts as a financial safety net during unexpected situations like job loss, medical expenses, or car repairs. Experts recommend saving at least three to six months’ worth of expenses. Cutting unnecessary spending and setting up automatic transfers can help build an emergency fund faster.\r\n\r\nExcerpt: The importance of an emergency fund and how to start one.An emergency fund acts as a financial safety net during unexpected situations like job loss, medical expenses, or car repairs. Experts recommend saving at least three to six months’ worth of expenses. Cutting unnecessary spending and setting up automatic transfers can help build an emergency fund faster.\r\n\r\nExcerpt: The importance of an emergency fund and how to start one.",
+    "excerpt": "The importance of an emergency fund and how to start one.",
+    "category": 2,
+    "image": "article_images/pexels-karolina-grabowska-4386421.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 0,
+    "likes": 0,
+    "reading_time": 0,
+    "seo_title": "How to Build an Emergency Fund for Financial Security",
+    "meta_description": "Learn why an emergency fund is essential and discover practical ways to build one quickly.",
+    "is_featured": true,
+    "created_at": "2025-02-24T08:09:20.751Z",
+    "updated_at": "2025-02-28T14:38:05.988Z",
+    "tags": [
+      2
+    ],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      7,
+      8,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 10,
+  "fields": {
+    "title": "Real Estate vs. Stocks: Which is the Better Investment?",
+    "slug": "real-estate-vs-stocks-which-is-the-better-investme",
+    "content": "Real estate and stocks are two of the most popular investment options, but they come with different risks and rewards. While real estate provides long-term stability and rental income, stocks offer liquidity and higher potential returns. The best choice depends on individual financial goals and risk tolerance.\r\n\r\nReal estate and stocks are two of the most popular investment options, but they come with different risks and rewards. While real estate provides long-term stability and rental income, stocks offer liquidity and higher potential returns. The best choice depends on individual financial goals and risk tolerance.",
+    "excerpt": "Comparing real estate and stock market investments.",
+    "category": 5,
+    "image": "article_images/pexels-karolina-grabowska-4386433.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 0,
+    "likes": 0,
+    "reading_time": 0,
+    "seo_title": "Real Estate vs. Stocks: Where Should You Invest?",
+    "meta_description": "Explore the pros and cons of real estate and stock investments to make the right financial decision.",
+    "is_featured": true,
+    "created_at": "2025-02-24T08:11:26.642Z",
+    "updated_at": "2025-02-28T14:38:41.984Z",
+    "tags": [
+      3
+    ],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 11,
+  "fields": {
+    "title": "How to Budget Like a Pro: The 50/30/20 Rule Explained",
+    "slug": "how-to-budget-like-a-pro-the-503020-rule-explained",
+    "content": "The 50/30/20 rule is a simple budgeting strategy that helps manage expenses effectively. It suggests allocating 50% of income to necessities, 30% to wants, and 20% to savings and debt repayment. Following this rule can lead to better financial stability and long-term wealth accumulation.The 50/30/20 rule is a simple budgeting strategy that helps manage expenses effectively. It suggests allocating 50% of income to necessities, 30% to wants, and 20% to savings and debt repayment. Following this rule can lead to better financial stability and long-term wealth accumulation.",
+    "excerpt": "A simple budgeting rule for better money management.",
+    "category": 3,
+    "image": "article_images/pexels-karolina-grabowska-4968653.webp",
+    "status": "draft",
+    "is_published": true,
+    "views": 0,
+    "likes": 0,
+    "reading_time": 0,
+    "seo_title": "Master Your Budget with the 50/30/20 Rule",
+    "meta_description": "Learn how the 50/30/20 budgeting rule can help you manage expenses and build wealth.",
+    "is_featured": true,
+    "created_at": "2025-02-24T08:13:15.004Z",
+    "updated_at": "2025-02-28T14:39:15.805Z",
+    "tags": [
+      4
+    ],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+},
+{
+  "model": "articles.article",
+  "pk": 12,
+  "fields": {
+    "title": "Common Financial Scams and How to Avoid Them",
+    "slug": "common-financial-scams-and-how-to-avoid-them",
+    "content": "Scammers constantly develop new tactics to steal money, from phishing emails to Ponzi schemes. Recognizing red flags, such as too-good-to-be-true investment opportunities and fake customer service calls, can help protect your finances. Using strong passwords, enabling two-factor authentication, and verifying sources before making payments are essential steps in avoiding fraud.",
+    "excerpt": "How to spot and avoid financial scams.",
+    "category": 6,
+    "image": "article_images/pexels-markusspiske-316401.webp",
+    "status": "published",
+    "is_published": true,
+    "views": 0,
+    "likes": 0,
+    "reading_time": 0,
+    "seo_title": "Top Financial Scams & How to Stay Safe",
+    "meta_description": "Learn how to recognize and prevent common financial scams to protect your money and personal information.",
+    "is_featured": true,
+    "created_at": "2025-02-24T08:15:11.376Z",
+    "updated_at": "2025-02-28T14:39:44.274Z",
+    "tags": [
+      4,
+      5
+    ],
+    "related_articles": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12
+    ]
+  }
+}
+]
