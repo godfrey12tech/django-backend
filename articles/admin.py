@@ -18,8 +18,8 @@ class CommentInline(admin.TabularInline):
     extra = 1
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ('title', 'category', 'status', 'is_featured', 'created_at', 'updated_at')
-    list_filter = ('status', 'is_featured', 'category')
+    list_display = ('title', 'category', 'status', 'is_featured', 'is_recommended', 'created_at', 'updated_at')
+    list_filter = ('status', 'is_featured', 'is_recommended', 'category')
     search_fields = ('title', 'content', 'excerpt')
     prepopulated_fields = {'slug': ('title',)}
     inlines = [ArticleImageInline, CommentInline]

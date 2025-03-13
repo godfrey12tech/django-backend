@@ -2,7 +2,6 @@ from rest_framework import serializers
 from .models import Category, Tag, Article, Comment, ArticleImage
 
 class CategorySerializer(serializers.ModelSerializer):
-    # To display subcategories under a category
     subcategories = serializers.SerializerMethodField()
 
     class Meta:
@@ -10,17 +9,12 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ['id', 'name', 'description', 'subcategories']
 
     def get_subcategories(self, obj):
-        # Use context values to limit recursive depth
         current_depth = self.context.get('depth', 0)
-        max_depth = self.context.get('max_depth', 2)  # Default max depth of 2 levels
-
+        max_depth = self.context.get('max_depth', 2)
         if current_depth >= max_depth:
-            return []  # Stop recursion when max depth is reached
-
-        # Increase the depth for nested serialization
+            return []
         new_context = dict(self.context)
         new_context['depth'] = current_depth + 1
-
         serializer = CategorySerializer(
             obj.subcategories.all(),
             many=True,
@@ -35,7 +29,7 @@ class TagSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     replies = serializers.SerializerMethodField()
-    email = serializers.EmailField(write_only=True)  # Hide email on output
+    email = serializers.EmailField(write_only=True)
 
     class Meta:
         model = Comment
@@ -64,14 +58,13 @@ class ArticleImageSerializer(serializers.ModelSerializer):
         return None
 
 class ArticleSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)  # Nested category with subcategories
+    category = CategorySerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     related_articles = serializers.SerializerMethodField()
     images = ArticleImageSerializer(many=True, read_only=True)
-    image = serializers.SerializerMethodField()  # Featured image
+    image = serializers.SerializerMethodField()
 
-    # Allow writing category, tags, and related articles via primary keys
     category_id = serializers.PrimaryKeyRelatedField(
         queryset=Category.objects.all(), source="category", write_only=True, required=False
     )
@@ -116,3 +109,33 @@ class ArticleSerializer(serializers.ModelSerializer):
         if related_ids is not None:
             article.related_articles.set(related_ids)
         return article
+
+# New serializer for Top Stories – returns only excerpt and link.
+class TopStorySerializer(serializers.ModelSerializer):
+    link = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Article
+        fields = ['id', 'excerpt', 'link']
+
+    def get_link(self, obj):
+        if obj.category and obj.category.name:
+            category_slug = obj.category.name.lower().replace(" ", "-")
+        else:
+            category_slug = "uncategorized"
+        return f"/category/{category_slug}/{obj.slug}/"
+
+# New serializer for Recommended Article – returns only title and link.
+class RecommendedArticleSerializer(serializers.ModelSerializer):
+    link = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Article
+        fields = ['id', 'title', 'link']
+
+    def get_link(self, obj):
+        if obj.category and obj.category.name:
+            category_slug = obj.category.name.lower().replace(" ", "-")
+        else:
+            category_slug = "uncategorized"
+        return f"/category/{category_slug}/{obj.slug}/"

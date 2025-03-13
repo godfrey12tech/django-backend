@@ -4,7 +4,10 @@ from rest_framework.response import Response
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Category, Tag, Article, Comment
-from .serializers import CategorySerializer, TagSerializer, ArticleSerializer, CommentSerializer
+from .serializers import (
+    CategorySerializer, TagSerializer, ArticleSerializer, CommentSerializer,
+    TopStorySerializer, RecommendedArticleSerializer
+)
 from .permissions import IsSuperAdmin  # Custom permission for admin-only modifications
 
 class CategoryViewSet(viewsets.ModelViewSet):
@@ -14,7 +17,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], permission_classes=[permissions.AllowAny])
     def articles(self, request, pk=None):
-        """Retrieve all articles under a specific category."""
         category = self.get_object()
         articles = Article.objects.filter(category=category, is_published=True).order_by('-created_at')
         serializer = ArticleSerializer(articles, many=True, context={'request': request})
@@ -22,18 +24,15 @@ class CategoryViewSet(viewsets.ModelViewSet):
 
     @action(detail=True, methods=['get'], permission_classes=[permissions.AllowAny])
     def subcategories(self, request, pk=None):
-        """Retrieve all subcategories under a specific category."""
         category = self.get_object()
-        subcategories = category.subcategories.all()  # Assuming you have a related_name 'subcategories'
+        subcategories = category.subcategories.all()
         serializer = CategorySerializer(subcategories, many=True, context={'request': request})
         return Response(serializer.data)
-
 
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [IsSuperAdmin]
-
 
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all().order_by('-created_at')
@@ -44,30 +43,20 @@ class ArticleViewSet(viewsets.ModelViewSet):
     ordering_fields = ['created_at', 'updated_at']
 
     def get_permissions(self):
-        """
-        Public users can view articles (list, retrieve, and retrieve_by_slug),
-        but only superadmins can create, update, or delete.
-        """
         if self.action in ['list', 'retrieve', 'retrieve_by_slug']:
             return [permissions.AllowAny()]
         return [IsSuperAdmin()]
 
     def get_serializer_context(self):
-        """Pass request in serializer context for building absolute URLs."""
         context = super().get_serializer_context()
         context.update({"request": self.request})
         return context
 
     @action(detail=False, methods=['get'], url_path='slug/(?P<slug>[^/.]+)', permission_classes=[permissions.AllowAny])
     def retrieve_by_slug(self, request, slug=None):
-        """
-        Retrieve an article by its slug.
-        Accessible via: GET /articles/slug/{slug}/
-        """
         article = get_object_or_404(Article, slug=slug)
         serializer = self.get_serializer(article)
         return Response(serializer.data)
-
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().order_by('-created_at')
@@ -77,10 +66,36 @@ class CommentViewSet(viewsets.ModelViewSet):
     search_fields = ['name', 'content']
 
     def get_permissions(self):
-        """
-        Public users can view and create comments,
-        but only superadmins can update or delete them.
-        """
         if self.action in ['list', 'retrieve', 'create']:
             return [permissions.AllowAny()]
         return [IsSuperAdmin()]
+
+# New ViewSet for Top Stories
+class TopStoriesViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Returns the top 3 articles as top stories.
+    We filter articles with is_featured=True and status='published',
+    ordering them by views in descending order.
+    """
+    serializer_class = TopStorySerializer
+
+    def get_queryset(self):
+        return Article.objects.filter(
+            is_featured=True,
+            status='published'
+        ).order_by('-views')[:3]
+
+# New ViewSet for Recommended Article
+class RecommendedArticleViewSet(viewsets.ReadOnlyModelViewSet):
+    """
+    Returns a recommended article.
+    This endpoint filters articles using the is_recommended flag,
+    ordering them by -created_at.
+    """
+    serializer_class = RecommendedArticleSerializer
+
+    def get_queryset(self):
+        return Article.objects.filter(
+            status='published',
+            is_recommended=True
+        ).order_by('-created_at')[:1]
