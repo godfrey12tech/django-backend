@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key-if-not-set')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
+DEBUG = True
 
-# Allowed hosts (comma separated in .env file)
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
+# Allowed hosts (allow all for development)
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Third-party tools
     'rest_framework',
     'corsheaders',
+    'django_extensions',
     'django_filters',
 ]
 
@@ -78,33 +79,28 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Database configuration using environment variables
+# Development Database (SQLite)
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.getenv('DB_NAME', 'finance'),
-        'USER': os.getenv('DB_USER', 'manager'),
-        'PASSWORD': os.getenv('DB_PASSWORD', '123pass9243::man'),
-        'HOST': os.getenv('DB_HOST', 'localhost'),
-        'PORT': os.getenv('DB_PORT', '6543'),
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
+# PostgreSQL configuration (commented out for development)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': os.getenv('DB_NAME', 'finance'),
+#         'USER': os.getenv('DB_USER', 'manager'),
+#         'PASSWORD': os.getenv('DB_PASSWORD', '123pass9243::man'),
+#         'HOST': os.getenv('DB_HOST', 'localhost'),
+#         'PORT': os.getenv('DB_PORT', '6543'),
+#     }
+# }
+
 # Password validation
-AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
-]
+AUTH_PASSWORD_VALIDATORS = []  # Disable password validators for development
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'
@@ -124,14 +120,11 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 10,
 }
 
-# CORS settings: ALLOWED_ORIGINS should be a comma-separated string in your .env file.
-allowed_origins = os.getenv("ALLOWED_ORIGINS", "")
-CORS_ALLOWED_ORIGINS = [origin.strip().rstrip('/') for origin in allowed_origins.split(",") if origin.strip()]
-CORS_ALLOW_ALL_ORIGINS = False
-
-# (Optional) Debug prints for CORS settings
-print("ALLOWED_ORIGINS:", os.getenv("ALLOWED_ORIGINS", ""))
-print("CORS_ALLOWED_ORIGINS:", CORS_ALLOWED_ORIGINS)
+# CORS settings: Allow all origins in development
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = ['*']
+CORS_ALLOW_METHODS = ['*']
 
 # Media files configuration
 MEDIA_URL = '/media/'
@@ -139,7 +132,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 APPEND_SLASH = True
 
-# CSRF trusted origins (modify as needed for your production domain)
-CSRF_TRUSTED_ORIGINS = [
-    "https://fynance-guide.vercel.app",
-]
+# CSRF settings (disable for development to ease API testing)
+CSRF_TRUSTED_ORIGINS = []
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False

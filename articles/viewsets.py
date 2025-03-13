@@ -1,6 +1,7 @@
 from rest_framework import viewsets, permissions, filters
 from rest_framework.decorators import action
 from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Category, Tag, Article, Comment
 from .serializers import CategorySerializer, TagSerializer, ArticleSerializer, CommentSerializer
@@ -19,10 +20,20 @@ class CategoryViewSet(viewsets.ModelViewSet):
         serializer = ArticleSerializer(articles, many=True, context={'request': request})
         return Response(serializer.data)
 
+    @action(detail=True, methods=['get'], permission_classes=[permissions.AllowAny])
+    def subcategories(self, request, pk=None):
+        """Retrieve all subcategories under a specific category."""
+        category = self.get_object()
+        subcategories = category.subcategories.all()  # Assuming you have a related_name 'subcategories'
+        serializer = CategorySerializer(subcategories, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
 class TagViewSet(viewsets.ModelViewSet):
     queryset = Tag.objects.all()
     serializer_class = TagSerializer
     permission_classes = [IsSuperAdmin]
+
 
 class ArticleViewSet(viewsets.ModelViewSet):
     queryset = Article.objects.all().order_by('-created_at')
@@ -34,10 +45,10 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
     def get_permissions(self):
         """
-        Public users can view articles (list, retrieve),
+        Public users can view articles (list, retrieve, and retrieve_by_slug),
         but only superadmins can create, update, or delete.
         """
-        if self.action in ['list', 'retrieve']:
+        if self.action in ['list', 'retrieve', 'retrieve_by_slug']:
             return [permissions.AllowAny()]
         return [IsSuperAdmin()]
 
@@ -46,6 +57,17 @@ class ArticleViewSet(viewsets.ModelViewSet):
         context = super().get_serializer_context()
         context.update({"request": self.request})
         return context
+
+    @action(detail=False, methods=['get'], url_path='slug/(?P<slug>[^/.]+)', permission_classes=[permissions.AllowAny])
+    def retrieve_by_slug(self, request, slug=None):
+        """
+        Retrieve an article by its slug.
+        Accessible via: GET /articles/slug/{slug}/
+        """
+        article = get_object_or_404(Article, slug=slug)
+        serializer = self.get_serializer(article)
+        return Response(serializer.data)
+
 
 class CommentViewSet(viewsets.ModelViewSet):
     queryset = Comment.objects.all().order_by('-created_at')

@@ -2,9 +2,31 @@ from rest_framework import serializers
 from .models import Category, Tag, Article, Comment, ArticleImage
 
 class CategorySerializer(serializers.ModelSerializer):
+    # To display subcategories under a category
+    subcategories = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
-        fields = ['id', 'name', 'description']
+        fields = ['id', 'name', 'description', 'subcategories']
+
+    def get_subcategories(self, obj):
+        # Use context values to limit recursive depth
+        current_depth = self.context.get('depth', 0)
+        max_depth = self.context.get('max_depth', 2)  # Default max depth of 2 levels
+
+        if current_depth >= max_depth:
+            return []  # Stop recursion when max depth is reached
+
+        # Increase the depth for nested serialization
+        new_context = dict(self.context)
+        new_context['depth'] = current_depth + 1
+
+        serializer = CategorySerializer(
+            obj.subcategories.all(),
+            many=True,
+            context=new_context
+        )
+        return serializer.data
 
 class TagSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,11 +64,11 @@ class ArticleImageSerializer(serializers.ModelSerializer):
         return None
 
 class ArticleSerializer(serializers.ModelSerializer):
-    category = CategorySerializer(read_only=True)
+    category = CategorySerializer(read_only=True)  # Nested category with subcategories
     tags = TagSerializer(many=True, read_only=True)
     comments = CommentSerializer(many=True, read_only=True)
     related_articles = serializers.SerializerMethodField()
-    images = ArticleImageSerializer(many=True, read_only=True)  # Removed redundant source argument
+    images = ArticleImageSerializer(many=True, read_only=True)
     image = serializers.SerializerMethodField()  # Featured image
 
     # Allow writing category, tags, and related articles via primary keys

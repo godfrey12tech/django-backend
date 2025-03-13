@@ -4,10 +4,16 @@ from django.utils.text import slugify
 class Category(models.Model):
     name = models.CharField(max_length=100, unique=True, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='subcategories'
+    )
 
     class Meta:
-        ordering=['name']
-        #ordering=['id']
+        ordering = ['name']
 
     def __str__(self):
         return self.name or "Unnamed Category"
@@ -41,7 +47,6 @@ class Article(models.Model):
         blank=True,
         related_name="articles"
     )
-    # Featured image field (optional)
     image = models.ImageField(
         upload_to='article_images/',
         blank=True,
@@ -51,7 +56,7 @@ class Article(models.Model):
     is_published = models.BooleanField(default=False)
     views = models.IntegerField(default=0)
     likes = models.IntegerField(default=0)
-    reading_time = models.IntegerField(default=0)  # Estimated in minutes
+    reading_time = models.IntegerField(default=0)  
     seo_title = models.CharField(max_length=255, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True)
     is_featured = models.BooleanField(default=False)
