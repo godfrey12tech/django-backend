@@ -12,6 +12,11 @@ class Category(MPTTModel):
         blank=True,
         related_name='subcategories'
     )
+    # Explicitly defined MPTT fields with defaults
+    lft = models.PositiveIntegerField(default=0, editable=False)
+    rght = models.PositiveIntegerField(default=0, editable=False)
+    tree_id = models.PositiveIntegerField(default=0, editable=False)
+    level = models.PositiveIntegerField(default=0, editable=False)
 
     class MPTTMeta:
         order_insertion_by = ['name']
@@ -20,7 +25,6 @@ class Category(MPTTModel):
         ordering = ['tree_id', 'lft']
 
     def __str__(self):
-        # Indent based on level in the tree for easier visualization
         indent = '---' * (self.get_level() if self.get_level() is not None else 0)
         return f"{indent}{self.name or 'Unnamed Category'}"
 
