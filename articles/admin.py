@@ -1,9 +1,9 @@
 from django.contrib import admin
+from mptt.admin import DraggableMPTTAdmin
 from .models import Category, Tag, Article, ArticleImage, Comment
 
-class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'parent')
-    search_fields = ('name',)
+# For Category, we now use DraggableMPTTAdmin for a tree view.
+admin.site.register(Category, DraggableMPTTAdmin)
 
 class TagAdmin(admin.ModelAdmin):
     list_display = ('name',)
@@ -30,7 +30,6 @@ class CommentAdmin(admin.ModelAdmin):
     list_filter = ('is_approved', 'created_at')
     search_fields = ('name', 'email', 'content')
 
-admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Comment, CommentAdmin)

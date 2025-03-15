@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils.text import slugify
+from mptt.models import MPTTModel, TreeForeignKey
 
-class Category(models.Model):
-    name = models.CharField(max_length=100, unique=True, blank=True, null=True)
+class Category(MPTTModel):
+    name = models.CharField(max_length=100, unique=False, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    parent = models.ForeignKey(
+    parent = TreeForeignKey(
         'self',
         on_delete=models.SET_NULL,
         null=True,
@@ -12,14 +13,19 @@ class Category(models.Model):
         related_name='subcategories'
     )
 
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
     class Meta:
-        ordering = ['name']
+        ordering = ['tree_id', 'lft']
 
     def __str__(self):
-        return self.name or "Unnamed Category"
+        # Indent based on level in the tree for easier visualization
+        indent = '---' * (self.get_level() if self.get_level() is not None else 0)
+        return f"{indent}{self.name or 'Unnamed Category'}"
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=True, blank=True, null=True)
+    name = models.CharField(max_length=50, unique=False, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
@@ -60,7 +66,7 @@ class Article(models.Model):
     seo_title = models.CharField(max_length=255, blank=True, null=True)
     meta_description = models.TextField(blank=True, null=True)
     is_featured = models.BooleanField(default=False)      # For marking as top stories
-    is_recommended = models.BooleanField(default=False)   # NEW FIELD for recommended articles
+    is_recommended = models.BooleanField(default=False)     # For recommended articles
     related_articles = models.ManyToManyField("self", blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

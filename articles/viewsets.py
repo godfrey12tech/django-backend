@@ -83,7 +83,7 @@ class TopStoriesViewSet(viewsets.ReadOnlyModelViewSet):
         return Article.objects.filter(
             is_featured=True,
             status='published'
-        ).order_by('-views')[:3]
+        ).order_by('-views')
 
 # New ViewSet for Recommended Article
 class RecommendedArticleViewSet(viewsets.ReadOnlyModelViewSet):
@@ -93,9 +93,9 @@ class RecommendedArticleViewSet(viewsets.ReadOnlyModelViewSet):
     ordering them by -created_at.
     """
     serializer_class = RecommendedArticleSerializer
-
+    
     def get_queryset(self):
         return Article.objects.filter(
             status='published',
             is_recommended=True
-        ).order_by('-created_at')[:1]
+        ).order_by('-created_at')

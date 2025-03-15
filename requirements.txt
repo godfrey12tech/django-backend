@@ -12,6 +12,8 @@ Django==5.1.6
 django-cors-headers==4.7.0
 django-extensions==3.2.3
 django-filter==25.1
+django-js-asset==3.1.2
+django-mptt==0.16.0
 djangorestframework==3.15.2
 envinfopy==0.2.0
 excelrd==3.0.0
