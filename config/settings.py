@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     # Third-party tools
     'rest_framework',
     'corsheaders',
+    'mptt',
     'django_extensions',
     'django_filters',
 ]

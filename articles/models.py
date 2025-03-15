@@ -1,9 +1,10 @@
 from django.db import models
 from django.utils.text import slugify
+from django.core.exceptions import ValidationError
 from mptt.models import MPTTModel, TreeForeignKey
 
 class Category(MPTTModel):
-    name = models.CharField(max_length=100, unique=False, blank=True, null=True)
+    name = models.CharField(max_length=100, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
     parent = TreeForeignKey(
         'self',
@@ -12,7 +13,7 @@ class Category(MPTTModel):
         blank=True,
         related_name='subcategories'
     )
-    # Explicitly defined MPTT fields with defaults
+    # These MPTT fields are maintained automatically by django-mptt.
     lft = models.PositiveIntegerField(default=0, editable=False)
     rght = models.PositiveIntegerField(default=0, editable=False)
     tree_id = models.PositiveIntegerField(default=0, editable=False)
@@ -25,11 +26,22 @@ class Category(MPTTModel):
         ordering = ['tree_id', 'lft']
 
     def __str__(self):
-        indent = '---' * (self.get_level() if self.get_level() is not None else 0)
-        return f"{indent}{self.name or 'Unnamed Category'}"
+        # For a two-level system, we can display subcategories as "Parent > Subcategory"
+        if self.parent:
+            return f"{self.parent.name} > {self.name}"
+        return self.name or "Unnamed Category"
+
+    def clean(self):
+        """
+        Enforce that if a category has a parent, that parent must be a top-level category.
+        This means we only allow two levels: a parent and its subcategories.
+        """
+        super().clean()
+        if self.parent and self.parent.parent:
+            raise ValidationError("Subcategories can only have a top-level parent (only one level of nesting is allowed).")
 
 class Tag(models.Model):
-    name = models.CharField(max_length=50, unique=False, blank=True, null=True)
+    name = models.CharField(max_length=50, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
 
     def __str__(self):
