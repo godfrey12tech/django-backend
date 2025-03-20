@@ -1,8 +1,29 @@
 from django.db import models
+from django.conf import settings
 from django.utils.text import slugify
 from django.core.exceptions import ValidationError
-from django.utils import timezone
 from mptt.models import MPTTModel, TreeForeignKey
+from django.contrib.auth.models import AbstractUser
+
+# Custom User Model
+class User(AbstractUser):
+    dummy_field = models.CharField(max_length=1, default='a')
+
+    ROLE_CHOICES = [
+        ('admin', 'Admin'),
+        ('staff', 'Staff'),
+        ('user', 'User'),
+    ]
+    role = models.CharField(
+        max_length=10,
+        choices=ROLE_CHOICES,
+        default='user',
+        help_text="Designates the type of user."
+    )
+
+    def __str__(self):
+        return self.username
+
 
 class Category(MPTTModel):
     name = models.CharField(max_length=100, blank=True, null=True)
@@ -87,6 +108,12 @@ class Article(models.Model):
         blank=True,
         null=True
     )
+    # Link each article to an author (custom user)
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name="author_articles"
+    )
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='draft')
     is_published = models.BooleanField(default=False)
     views = models.IntegerField(default=0)
@@ -133,6 +160,14 @@ class Comment(models.Model):
         Article,
         on_delete=models.CASCADE,
         related_name="comments"
+    )
+    # Optional: Link comment to a user if logged in
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='comments'
     )
     name = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)

@@ -8,6 +8,7 @@ from .viewsets import (
     TopStoriesViewSet,
     RecommendedArticleViewSet
 )
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 
 router = DefaultRouter()
 router.register(r'categories', CategoryViewSet)
@@ -19,4 +20,6 @@ router.register(r'recommended', RecommendedArticleViewSet, basename='recommended
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
