@@ -1,0 +1,97 @@
+Metadata-Version: 2.1
+Name: retryrequests
+Version: 0.2.0
+Summary: A Python library that make HTTP requests with exponential back-off retry by using requests package.
+Home-page: https://github.com/thombashi/retryrequests
+Author: Tsuyoshi Hombashi
+Author-email: tsuyoshi.hombashi@gmail.com
+License: MIT License
+Project-URL: Source, https://github.com/thombashi/retryrequests
+Project-URL: Tracker, https://github.com/thombashi/retryrequests/issues
+Keywords: requests,retry
+Platform: UNKNOWN
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.6
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: requests (<3.0.0,>=2.18.4)
+
+.. contents:: **retryrequests**
+   :backlinks: top
+   :depth: 2
+
+
+Summary
+============================================
+A Python library that make HTTP requests with exponential back-off retry by using `requests <https://docs.python-requests.org/en/master/>`__ package.
+
+.. image:: https://badge.fury.io/py/retryrequests.svg
+    :target: https://badge.fury.io/py/retryrequests
+    :alt: PyPI package version
+
+.. image:: https://img.shields.io/pypi/pyversions/retryrequests.svg
+    :target: https://pypi.org/project/retryrequests
+    :alt: Supported Python versions
+
+
+Installation
+============================================
+
+::
+
+    pip install retryrequests
+
+
+Usage
+============================================
+``retryrequests`` has same interface with ``requests``:
+
+:Sample Code:
+    .. code-block:: python
+
+        import json
+
+        import retryrequests
+
+
+        r = retryrequests.get("https://kctbh9vrtdwd.statuspage.io/api/v2/status.json")
+        r.raise_for_status()
+
+        print(json.dumps(r.json(), indent=4))
+
+:Output:
+    .. code-block:: json
+
+        {
+            "page": {
+                "id": "kctbh9vrtdwd",
+                "name": "GitHub",
+                "url": "https://www.githubstatus.com",
+                "time_zone": "Etc/UTC",
+                "updated_at": "2019-03-30T07:11:24.851Z"
+            },
+            "status": {
+                "indicator": "none",
+                "description": "All Systems Operational"
+            }
+        }
+
+
+Dependencies
+============================================
+Python 3.6+
+
+- `requests <http://python-requests.org/>`__
+
+

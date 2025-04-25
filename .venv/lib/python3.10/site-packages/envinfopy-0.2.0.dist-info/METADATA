@@ -1,0 +1,168 @@
+Metadata-Version: 2.1
+Name: envinfopy
+Version: 0.2.0
+Summary: envinfopy is a Python Library to get execution environment information.
+Home-page: https://github.com/thombashi/envinfopy
+Author: Tsuyoshi Hombashi
+Author-email: tsuyoshi.hombashi@gmail.com
+License: MIT License
+Project-URL: Source, https://github.com/thombashi/envinfopy
+Project-URL: Tracker, https://github.com/thombashi/envinfopy/issues
+Keywords: environment,uname,version,markdown
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Terminals
+Requires-Python: >=3.7
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: importlib-metadata (<=6.7.0) ; python_version < "3.8"
+Provides-Extra: all
+Requires-Dist: pytablewriter (<2,>=0.59.0) ; extra == 'all'
+Requires-Dist: distro (<2) ; extra == 'all'
+Requires-Dist: releasecmd (>=0.9) ; extra == 'all'
+Provides-Extra: cli
+Requires-Dist: pytablewriter (<2,>=0.59.0) ; extra == 'cli'
+Requires-Dist: distro (<2) ; extra == 'cli'
+Provides-Extra: dev
+Requires-Dist: releasecmd (>=0.9) ; extra == 'dev'
+Provides-Extra: distro
+Requires-Dist: distro (<2) ; extra == 'distro'
+Provides-Extra: markdown
+Requires-Dist: pytablewriter (<2,>=0.59.0) ; extra == 'markdown'
+Provides-Extra: test
+Requires-Dist: pytest (>=6.0.1) ; extra == 'test'
+Requires-Dist: pytest-md-report (>=0.4) ; extra == 'test'
+Requires-Dist: distro (<2) ; extra == 'test'
+Requires-Dist: pytablewriter (<2,>=0.59.0) ; extra == 'test'
+Requires-Dist: releasecmd (>=0.9) ; extra == 'test'
+Requires-Dist: subprocrunner (>=1.2.1) ; extra == 'test'
+Requires-Dist: pytest-discord (>=0.1.4) ; extra == 'test'
+
+.. contents:: **envinfopy**
+   :backlinks: top
+   :depth: 2
+
+
+Summary
+============================================
+.. image:: https://badge.fury.io/py/envinfopy.svg
+    :target: https://badge.fury.io/py/envinfopy
+    :alt: PyPI package version
+
+.. image:: https://img.shields.io/pypi/pyversions/envinfopy.svg
+    :target: https://pypi.org/project/envinfopy
+    :alt: Supported Python versions
+
+.. image:: https://img.shields.io/pypi/implementation/envinfopy.svg
+    :target: https://pypi.org/project/envinfopy
+    :alt: Supported Python implementations
+
+.. image:: https://github.com/thombashi/envinfopy/actions/workflows/lint_and_test.yml/badge.svg
+    :target: https://github.com/thombashi/envinfopy/actions/workflows/lint_and_test.yml
+    :alt: CI status of Linux/macOS/Windows
+
+.. image:: https://coveralls.io/repos/github/thombashi/envinfopy/badge.svg?branch=master
+    :target: https://coveralls.io/github/thombashi/envinfopy?branch=master
+    :alt: Test coverage: coveralls
+
+envinfopy is a Python Library to get execution environment information.
+
+
+Installation
+============================================
+::
+
+    python3 -m pip install envinfopy
+
+
+Usage
+============================================
+
+Library usage
+--------------------------------------------
+
+Get execution environment information as a dictionary:
+
+.. code-block:: python
+
+    >>> import envinfopy
+    >>> envinfopy.get_envinfo()
+    {'uname': 'Linux', 'python_implementation': 'CPython', 'python_version': '3.11.4', 'platform': 'Ubuntu 22.04.2 LTS'}
+
+Get execution environment information and specific package version information:
+
+.. code-block:: python
+
+    >>> import envinfopy
+    >>> envinfopy.get_envinfo(["envinfopy"])
+    {'uname': 'Linux', 'python_implementation': 'CPython', 'python_version': '3.11.4', 'platform': 'Ubuntu 22.04.2 LTS', 'envinfopy': '0.1.0'}
+
+Get environment information as Markdown:
+
+::
+
+    python3 -m pip install envinfopy[markdown]  # install optional dependencies
+
+.. code-block:: python
+
+    >>> import envinfopy
+    >>> print(envinfopy.dumps(["envinfopy"], format="markdown"))
+    |  Module   |      Version       |
+    | --------- | ------------------ |
+    | uname     | Linux              |
+    | Python    | CPython 3.11.4     |
+    | platform  | Ubuntu 22.04.2 LTS |
+    | envinfopy | 0.1.0              |
+
+CLI usage
+--------------------------------------------
+::
+
+    $ python3 -m install envinfopy[cli]  # install optional dependencies
+
+    $ python3 -m envinfopy envinfopy setuptools --format markdown
+    |   Module   |                 Version                 |
+    | ---------- | --------------------------------------- |
+    | uname      | Linux 5.15.90.1-microsoft-standard-WSL2 |
+    | Python     | CPython 3.11.4                          |
+    | platform   | Ubuntu 22.04.2 LTS                      |
+    | envinfopy  | 0.0.7                                   |
+    | setuptools | 67.8.0                                  |
+
+Command help
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
+
+    usage: __main__.py [-h] [-V] [-v] [--format {text,markdown,md,json,itemize}] packages [packages ...]
+
+    positional arguments:
+      packages              PyPI package names to extract versions
+
+    options:
+      -h, --help            show this help message and exit
+      -V, --version         show program's version number and exit
+      -v, --verbose
+      --format {text,markdown,md,json,itemize}
+                            output format
+
+    Issue tracker: https://github.com/thombashi/envinfopy/issues
+
+
+Dependencies
+============================================
+Python 3.7+

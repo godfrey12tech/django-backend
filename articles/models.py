@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from mptt.models import MPTTModel, TreeForeignKey
 from django.contrib.auth.models import AbstractUser
 
+
 # Custom User Model
 class User(AbstractUser):
     dummy_field = models.CharField(max_length=1, default='a')
@@ -64,10 +65,20 @@ class Category(MPTTModel):
         if self.parent and self.parent.parent:
             raise ValidationError("Subcategories can only have a top-level parent (only one level of nesting is allowed).")
     
+    def generate_unique_slug(self, slug_base):
+        """Generate a unique slug by appending a number or random string if needed."""
+        slug = slug_base
+        num = 1
+        while Category.objects.filter(slug=slug).exists():
+            slug = f"{slug_base}-{num}"
+            num += 1
+        return slug
+    
     def save(self, *args, **kwargs):
         # Auto-generate slug if not provided.
         if not self.slug and self.name:
-            self.slug = slugify(self.name)
+            slug_base = slugify(self.name)
+            self.slug = self.generate_unique_slug(slug_base)
         super().save(*args, **kwargs)
 
 
@@ -88,7 +99,7 @@ class Article(models.Model):
         ('published', 'Published'),
     )
     title = models.CharField(max_length=255, blank=True, null=True)
-    slug = models.SlugField(unique=True, blank=True, null=True)
+    slug = models.SlugField(unique=True, blank=True, default='default-slug')
     content = models.TextField(blank=True, null=True)
     excerpt = models.TextField(blank=True, null=True)
     category = models.ForeignKey(
@@ -134,11 +145,21 @@ class Article(models.Model):
         if self.category and self.category.parent is None:
             raise ValidationError("Articles must be linked to a subcategory, not a parent category.")
     
+    def generate_unique_slug(self, slug_base):
+        """Generate a unique slug by appending a number or random string if needed."""
+        slug = slug_base
+        num = 1
+        while Article.objects.filter(slug=slug).exists():
+            slug = f"{slug_base}-{num}"
+            num += 1
+        return slug
+
     def save(self, *args, **kwargs):
         # Validate before saving.
         self.full_clean()
         if not self.slug and self.title:
-            self.slug = slugify(self.title)
+            slug_base = slugify(self.title)
+            self.slug = self.generate_unique_slug(slug_base)
         super().save(*args, **kwargs)
     
     def __str__(self):

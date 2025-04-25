@@ -5,6 +5,7 @@ from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import DjangoFilterBackend
+from django.http import Http404
 
 from .models import Category, Tag, Article, Comment
 from .serializers import (
@@ -71,6 +72,27 @@ class ArticleViewSet(viewsets.ModelViewSet):
         context['depth'] = int(self.request.query_params.get('depth', 0))
         return context
 
+    def get_object(self):
+        """
+        Override get_object to support lookups by both slug and primary key.
+        It first tries to find an article with a matching slug, and if not found,
+        falls back to a primary key lookup.
+        """
+        queryset = self.get_queryset()
+        lookup_value = self.kwargs.get(self.lookup_url_kwarg or self.lookup_field, None)
+        if not lookup_value:
+            raise Http404("No lookup value provided.")
+
+        # Try to retrieve by slug first.
+        obj = queryset.filter(slug=lookup_value).first()
+        if not obj:
+            # Fallback to primary key lookup.
+            obj = queryset.filter(pk=lookup_value).first()
+        if not obj:
+            raise Http404("Article not found.")
+        self.check_object_permissions(self.request, obj)
+        return obj
+
     @method_decorator(cache_page(60 * 10))  # 10-minute cache
     @action(detail=False, methods=['get'], url_path='slug/(?P<slug>[^/.]+)')
     def retrieve_by_slug(self, request, slug=None):
@@ -106,6 +128,7 @@ class CommentViewSet(viewsets.ModelViewSet):
 
 class TopStoriesViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = TopStorySerializer
+    permission_classes = [permissions.AllowAny]  # Allow public access
 
     def get_queryset(self):
         return Article.objects.filter(is_featured=True, status='published').order_by('-created_at')
@@ -117,6 +140,7 @@ class TopStoriesViewSet(viewsets.ReadOnlyModelViewSet):
 
 class RecommendedArticleViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = RecommendedArticleSerializer
+    permission_classes = [permissions.AllowAny]  # Allow public access
 
     def get_queryset(self):
         return Article.objects.filter(status='published', is_recommended=True).order_by('-created_at')
